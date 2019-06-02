@@ -13,12 +13,9 @@ import axios from 'axios';
 class BlogApp extends Component {
     state={
         data: [],
-        allData:[],
-        filter: [],
         cards: [1,2,3,4,5,6,7,8],
         page: 1,
-        category: "All",
-        count: 0
+        category: "All"
     }
     styles={
         innerGridNav:{
@@ -31,99 +28,61 @@ class BlogApp extends Component {
     }
 
     setCategory=(c)=>{
-        var obj=[]
         if(c==="ALL"){
-            var f=this.filterNames("all")
-            this.setState({category: c,filter:f})
+            this.setState({category: c})
         }
         else if(c==="WEB DESIGN"){
-            var f=this.filterNames("web")
-            console.log(f)
-            this.setState({category: "web",filter:f})
+            this.setState({category: c})
         }
         else if(c==="WEB DEVELOPMENT"){
-            var f=this.filterNames("web")
-            console.log(f)
-            this.setState({category: "web",filter:f})
+            this.setState({category: c})
         }
         else if(c==="APP DEVELOPMENT"){
-            var f=this.filterNames("app")
-            this.setState({category: "app",filter:f})
+            this.setState({category: c})
         }
-    }
-
-    getAllData=(p)=>{
-        // axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${p||this.state.page}`)
-        axios.get(`http://localhost:8000/api/posts/`)
-        .then((response)=>{
-            // console.log("Response: "+response.data)
-            this.setState({
-                allData: response.data.results
-            })
-        })
-        .catch(e=>console.log(e))
     }
 
     getData=(p)=>{
-        // axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${p||this.state.page}`)
-        axios.get(`http://localhost:8000/api/posts/?limit=2&offset=${p*2-2}`)
+        axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${p||this.state.page}`)
         .then((response)=>{
-            // console.log("Response: "+response.data)
+            console.log(response.data)
             this.setState({
-                data: response.data.results,
-                filter: response.data.results,
-                page: p,
-                count: Math.ceil((response.data.count)/2)*10
+                data: response.data,
+                page: p
             })
         })
         .catch(e=>console.log(e))
     }
 
-    filterNames(tech){
-        if(tech==="all"){
-            var all=this.state.data.filter(item => item.technologies[0]==="web"||item.technologies[0]==="app")
-            return all
-        }
-        else{
-            return this.state.data.filter(item => item.technologies[0]===tech)
-        }
-      }
-
-      filterTitles(title){
-        return this.state.data.filter(item => item.title.toLowerCase().includes(title.toLowerCase()))
-      }
-
-    getSearchData=(text)=>{
-        var results=this.filterTitles(text)
-        this.setState({filter: results})
-        // console.log(results)
+    getSearchData=(p)=>{
+        axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${p}`)
+        .then((response)=>{
+            console.log(response.data)
+            this.setState({
+                data: response.data,
+                page: p
+            })
+        })
+        .catch(e=>console.log(e))
     }
 
     componentDidMount=()=>{
         this.getData()
-        this.getAllData()
     }
 
   render() {
-      console.log(this.state)
-    //   this.getSearchData(1)
-    this.filterNames("web")
-    const renderCard=this.state.filter.map((data)=>{
+    const renderCard=this.state.data.map((data)=>{
             return(
             <BlogCard
-                cover={data.cover}
-                heading={data.technologies}
-                subHeading={data.title}
-                pic={data.author.profile_pic}
-                content={data.content}
-                author={data.author.username}
-                date={data.publish}
-                detailLink={data.detail}
+                heading={this.state.category}
+                subHeading="What makes a great landing page?"
+                content={data.body}
+                author="Jon Snow" date="Jun 6, 1999"
             />
                 )
         }
         )
-    console.log(this.state.data)
+    console.log(this.state.category)
     return (
         <div>
             <Grid
@@ -185,7 +144,7 @@ class BlogApp extends Component {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Pagination width={this.state.count} getData={this.getData} setPage={this.setPage} />
+                    <Pagination getData={this.getData} setPage={this.setPage} />
                 </Grid>
                 {/* <P /> */}
             </Grid>

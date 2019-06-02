@@ -10,19 +10,10 @@ import Footer from '../../components/footer/footer';
 import MixedText from './components/MixedText/MixedText';
 import Quote from './components/Quote/Quote';
 import Fade from 'react-reveal/Fade';
-import axios from 'axios';
 import Slide from 'react-reveal/Slide';
 
 class BlogSingle extends Component {
-    state = { 
-        // detailURL: this.props.match.params.limit,
-        data:[],
-        para:{
-            lowerText:[],
-            quoteText:[],
-            upperText:[]
-        }
-     }
+    state = {  }
     style={
         heading:{
             fontFamily: "'Open Sans', sans-serif",
@@ -67,88 +58,7 @@ class BlogSingle extends Component {
             borderLeft: "3px solid #FF7171 "
         }
     }
-
-    getData=(p)=>{
-        // axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${p||this.state.page}`)
-        axios.get(`http://localhost:8000/api/posts/${this.getSlug(this.props.location.pathname)}`)
-        .then((response)=>{
-            // console.log("Response: "+response.data)
-            var paragraphs=this.getPara(response.data.content)
-            this.setState({
-                data: response.data,
-                para: paragraphs,
-                page: p
-            })
-        })
-        .catch(e=>console.log(e))
-    }
-
-    getSlug=(url)=>{
-        if(url){
-        var slug =url.split("/")
-        slug=slug[slug.length-1]
-        console.log(slug)
-        return slug
-        }
-        else{
-            return ""
-        }
-    }
-
-    componentDidMount=()=>{
-        this.getData()
-    }
-
-    formatTech=(tech)=>{
-        var t=`${tech}`
-        return t.toUpperCase()
-    }
-
-    getPara=(content)=>{
-        var para=content.split("%")
-        var upper=[]
-        var lower=[]
-        var quote=[]
-        if(para.length>=4){
-            upper=para.slice(0,2)
-            quote=para.slice(2,3)
-            lower=para.slice(3,)
-        }
-        var content1={
-            upperText: upper,
-            quoteText: quote,
-            lowerText: lower
-        }
-        return content1
-    }
-
-    render() {
-        const renderParaUpper=this.state.para.upperText.map((data)=>{
-            return(
-                <Grid item xs={10}>
-                    <Paragraph text={data} />
-                </Grid>
-                )
-        }
-        )
-        const renderQuote=this.state.para.quoteText.map((data)=>{
-            return(
-                <Quote 
-                text={data}
-                />
-                )
-        }
-        )
-        const renderParaLower=this.state.para.lowerText.map((data)=>{
-            return(
-                <Grid item xs={10}>
-                    <Paragraph text={data} />
-                </Grid>
-                )
-        }
-        )
-        console.log(this.getSlug(this.props.location.pathname))
-        console.log(this.state)
+    render() { 
         return ( 
             <React.Fragment>
                 <Grid
@@ -175,39 +85,54 @@ class BlogSingle extends Component {
                     >
                         <Grid item xs={10}>
                         <Fade cascade>
-                            <div style={this.style.heading}>{this.state.data.technologies?this.formatTech(this.state.data.technologies):""}</div>
+                            <div style={this.style.heading}>WEB DESIGN</div>
                         </Fade>
                         <Fade cascade delay={200} >
-                            <div style={this.style.subHeading} >{this.state.data.title?this.state.data.title:""}</div>
+                            <div style={this.style.subHeading} >What makes a great landing page?</div>
                         </Fade>
-                            <Info
-                            username={this.state.data.author?this.state.data.author.username:""}
-                            pic={this.state.data.author?this.state.data.author.profile_pic:""}
-                            date={this.state.data.publish?this.state.data.publish:""}
-                            />
+                            <Info />
                         </Grid>
 
                         {/* Image */}
                         <Grid item xs={10}>
                         <Fade cascade delay={300} >
-                            <img style={this.style.img} src={this.state.data.cover?this.state.data.cover:""} width="100%" alt="#"/>
+                            <img style={this.style.img} src={Image} width="100%" alt="#"/>
                         </Fade>
                         </Grid>
 
-                        {renderParaUpper}
+                        {/* Paragraph component */}
+                        <Grid item xs={10}>
+                            <Paragraph text="It’s more business-critical than ever to have a landing page that captures the attention of your visitors before they head for the dreaded ‘Back’ button. Thankfully, though, the design process of a great landing page can be much more informed and calculated than ever before — the trick is in figuring out what core elements are required to achieve that all-important cut-through." />
+                        </Grid>
 
-                        {renderQuote}
+                        {/* Paragraph component */}
+                        <Grid item xs={10}>
+                            <Paragraph text="Nobody likes to hang around. If you don’t give your site visitors what they want or, indeed, explain what you think they should want within a matter of seconds, they’ll be off to find a better alternative. Translation: you lose sales." />
+                        </Grid>
 
-                        {renderParaUpper}
+                        {/* Quote component */}
+                        <Quote 
+                        text="If it’s an all-too-familiar pain-point for you that people are doing more bouncing than converting, here’s where you discover what your landing page(s) could be missing and, of course, what you can do to put that right. Here are the principles that should be at the core of any landing page, whether it’s for a plucky B2C startup going through a launch or an established B2B giant going through a revamp." 
+                        />
+
+                        {/* Paragraph component */}
+                        <Grid item xs={10}>
+                            <Paragraph text=" Put simply, if a user has to work hard to understand what it is you’re offering them, they’re not going to work hard to give you their time or money. The benefits of the features must be immediately clear and this can be really bolstered by great design." />
+                        </Grid>
+
+                        {/* Paragraph component */}
+                        <Grid item xs={10}>
+                            <Paragraph text=' I" f a user has to work hard to understand what it is you’re offering them, they’re not going to work hard to give you their time or money "' />
+                        </Grid>
                         
                         {/* MixedText component */}
-                        {/* <Grid item xs={10}>
+                        <Grid item xs={10}>
                             <MixedText 
                             normalText=""
                             boldText=""
                             italicText=""
                             />
-                        </Grid> */}
+                        </Grid>
 
                         <Grid item xs={10}>
                             <img style={this.style.img} src={Image2} width="100%" alt="#"/>
@@ -231,10 +156,7 @@ class BlogSingle extends Component {
                         justify="center"
                         >
                             <Grid item xs={12}>
-                                <LowerSection
-                                res={this.state.data.responses?this.state.data.responses:""}
-                                comment={this.state.data.comment?this.state.data.comment:""}
-                                />
+                                <LowerSection />
                             </Grid>
                         </Grid>
                     </Grid>

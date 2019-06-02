@@ -40,12 +40,12 @@ class CommentCard extends Component {
                 <Card style={this.styles.responses} >
                     <CardContent>
                     <div style={this.styles.boldFont2} >
-                        {this.props.author}
+                        Jon Snow
                         <br/>
                         <div style={this.styles.subFont} >June 6, 1999</div>
                     </div>
                     <div style={this.styles.comment} >
-                        {this.props.text}
+                        Thanks! Your article differs from the many me-too texts, by bringing up good examples. Would love to see more
                     </div>
                     </CardContent>
                 </Card>
