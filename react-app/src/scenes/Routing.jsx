@@ -11,6 +11,7 @@ import Home from './Home/HomePage';
 // import Contact from '../pages/Contacts';
 // import EventPage from '../pages/Event';
 import ProjectSingle from './ProjectSingle/ProjectSingle';
+import AboutUS from './About_us/AboutUs';
 
 class Routing extends Component {
     state = {  }
@@ -27,6 +28,7 @@ class Routing extends Component {
                         <Route path="/BlogSingle" component={BlogSingle} />
                         <Route path="/Projects" component={ProjectsMain} />
                         <Route path="/ProjectSingle" component={ProjectSingle} />
+                        <Route path="/AboutUS" component={AboutUS} />
                         {/* <Route path="/EventSingle" component={EventSingle} /> */}
                     </div>
             </div>
